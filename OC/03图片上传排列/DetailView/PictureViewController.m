@@ -9,6 +9,8 @@
 #import "PictureViewController.h"
 #import "PictureView.h"
 #import "PhotosView.h"
+
+#import "ZZPhotoKit.h"
 @interface PictureViewController ()
 
 @end
@@ -46,6 +48,24 @@
     
 }
 
+
+#pragma mark --- ZZBrowserPickerDelegate
+-(NSInteger)zzbrowserPickerPhotoNum:(ZZBrowserPickerViewController *)controller
+{
+    return 20;
+} 
+
+-(NSArray *)zzbrowserPickerPhotoContent:(ZZBrowserPickerViewController *)controller
+{
+    NSArray *array = @[
+                       @"http://pic86.nipic.com/file/20151229/11592367_090842563000_2.jpg",
+                       [UIImage imageNamed:@"scv2.jpg"],
+                       [UIImage imageNamed:@"scv3.jpg"],
+                       [UIImage imageNamed:@"scv4.jpg"],
+                       [UIImage imageNamed:@"scv5.jpg"],
+                       ];
+    return array;
+}
 
 
 

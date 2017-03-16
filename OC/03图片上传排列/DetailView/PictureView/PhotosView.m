@@ -7,8 +7,11 @@
 //
 
 #import "PhotosView.h"
+#import "AppDelegate.h"
 #import <ReactiveCocoa.h>
 #import <Masonry.h>
+
+#import "ZZPhotoKit.h"
 
 #define PHOTOWH 80
 #define PHOTOMARGIN 10
@@ -70,6 +73,8 @@
     
 }
 
+
+#pragma mark 初始化按钮
 -(void)setupButtons
 {
     //    添加按钮
@@ -79,11 +84,7 @@
     [addbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     addbtn.tag = 1;
     [[addbtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
-        UIButton *btn = [UIButton new];
-        [self.picArr addObject:btn];
-        btn.backgroundColor = H_UI_RandomColor;
-        [self addSubview:btn];
-        NSLog(@"点击了添加按钮");
+        [self alertAction];
         
     }];
     [self addSubview:addbtn];
@@ -98,6 +99,7 @@
     [[cancelBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
         if (self.picArr.count>0) {
             UIButton *btn = [self.picArr lastObject];
+            [btn removeFromSuperview];
             //删除最后的object从subviews
             //            [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)]
             //最后删除数组的最后一个
@@ -113,15 +115,75 @@
 }
 
 
+-(void)alertAction
+{
+    //获取当前的view
+    UIViewController *viewController = ((AppDelegate *)[UIApplication sharedApplication].delegate).window.rootViewController;
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"相片选择方式" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *photoAction = [UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ZZCameraController *cameraController = [[ZZCameraController alloc]init];
+        cameraController.takePhotoOfMax = 8;
+        
+        cameraController.isSaveLocal = NO;
+        [cameraController showIn:viewController result:^(id responseObject){
+            
+            for ( ZZCamera *photo in (NSArray *)responseObject) {
+                
+                NSLog(@"相机的对象%@",photo.image);
+                
+                UIButton *btn = [UIButton new];
+                [btn setImage:photo.image forState:UIControlStateNormal];
+                [self.picArr addObject:btn];
+                [self addSubview:btn];
+                 
+            }
+            //            NSLog(@"重载");
+//            [_collectionView reloadData];
+            
+        }];
+//        UIButton *btn = [UIButton new];
+//        [self.picArr addObject:btn];
+//        btn.backgroundColor = H_UI_RandomColor;
+//        [self addSubview:btn];
+        NSLog(@"点击了相机按钮");
+    }];
+    
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"相册选择" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ZZPhotoController *photoController = [[ZZPhotoController alloc]init];
+        photoController.selectPhotoOfMax = 8;
+        //设置相册中完成按钮旁边小圆点颜色。
+        //        photoController.roundColor = [UIColor greenColor];
+        
+        [photoController showIn:viewController result:^(id responseObject){
+            
+            
+            for (ZZPhoto *photo in (NSArray *)responseObject) {
+                UIButton *btn = [UIButton new];
+                [btn setImage:photo.originImage forState:UIControlStateNormal];
+                [self.picArr addObject:btn];
+                [self addSubview:btn];
+            }
+            
+        }];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:photoAction];
+    [alertController addAction:cameraAction];
+    [alertController addAction:cancelAction];
+    
+    [viewController presentViewController:alertController animated:YES completion:nil];
+    
+    
+}
 
 
-#pragma mark - 添加控件方法
+#pragma mark - 添加控件动态布局的方法
 -(void)layoutSubviews
 {
     [super layoutSubviews];
     
-    CGRect frameRect = self.frame;
-    CGFloat lastBtnMaxX = 0 ;
     UIButton *lastBtn;
     //复制多一个临时的数组主要为了添加/删除按钮
     NSMutableArray *tmpArr = [self.picArr mutableCopy];
@@ -141,7 +203,6 @@
     for (int i = 0; i<count; i++) {
         NSInteger row = i / maxColumns;
         NSInteger column = i %maxColumns;
-        NSLog(@"打印的行%d和列%d,还有总数%d",row,column,count);
         UIButton *btn = tmpArr[i];
         CGFloat btnX = magin + (magin+btnW)*column;
         CGFloat btnY = magin + (magin+btnW)*row;
@@ -163,7 +224,8 @@
 
     }
 #else
-    
+    CGRect frameRect = self.frame;
+    CGFloat lastBtnMaxX = 0 ;
     //方法二: 使用frame 布局,坏处就是外部不能使用layout布局
     for (int i = 0; i<count; i++) {
         NSInteger row = i / maxColumns;

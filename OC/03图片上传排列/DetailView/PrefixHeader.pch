@@ -12,5 +12,14 @@
 #import <Masonry.h>
 
 
+//255以内的随机数
+#define crm_random255 arc4random_uniform(255)/255.0
+
+//色调部分
+#define H_UI_RandomColor [UIColor colorWithRed:crm_random255 green:crm_random255 blue:crm_random255 alpha:1]
+
+#define UIColorFromHexValue(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+
 
 #endif /* PrefixHeader_pch */

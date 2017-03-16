@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Pl0-jz-SeM" customClass="PicturePickerCell">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="joe-Ms-zxl">
+                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                        <state key="normal" backgroundImage="compose_pic_add"/>
+                        <connections>
+                            <action selector="add" destination="Pl0-jz-SeM" eventType="touchUpInside" id="sHZ-UJ-auO"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QWq-bj-XoJ">
+                        <rect key="frame" x="76" y="0.0" width="24" height="24"/>
+                        <state key="normal" image="compose_photo_close"/>
+                        <connections>
+                            <action selector="close" destination="Pl0-jz-SeM" eventType="touchUpInside" id="nSF-vN-phj"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="joe-Ms-zxl" secondAttribute="trailing" id="9DB-oM-ASJ"/>
+                <constraint firstAttribute="bottom" secondItem="joe-Ms-zxl" secondAttribute="bottom" id="HPU-g0-E4M"/>
+                <constraint firstItem="joe-Ms-zxl" firstAttribute="top" secondItem="Pl0-jz-SeM" secondAttribute="top" id="ObU-Nl-WgU"/>
+                <constraint firstItem="QWq-bj-XoJ" firstAttribute="top" secondItem="Pl0-jz-SeM" secondAttribute="top" id="VGt-Q4-gOv"/>
+                <constraint firstAttribute="trailing" secondItem="QWq-bj-XoJ" secondAttribute="trailing" id="X6z-W8-Yxa"/>
+                <constraint firstItem="joe-Ms-zxl" firstAttribute="leading" secondItem="Pl0-jz-SeM" secondAttribute="leading" id="rrp-Z2-u7K"/>
+            </constraints>
+            <size key="customSize" width="184" height="156"/>
+            <connections>
+                <outlet property="addButton" destination="joe-Ms-zxl" id="lch-Ag-zfz"/>
+                <outlet property="closeButton" destination="QWq-bj-XoJ" id="KLg-Nd-vzz"/>
+            </connections>
+            <point key="canvasLocation" x="251" y="236"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="compose_photo_close" width="24" height="24"/>
+        <image name="compose_pic_add" width="70" height="70"/>
+    </resources>
+</document>

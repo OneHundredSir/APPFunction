@@ -1,0 +1,6 @@
+platform:ios,'7.0'
+target 'DetailView' do
+    pod 'Masonry', '~>1.0.1'
+    pod 'MJExtension', '~> 3.0.13'
+  pod 'ReactiveCocoa', '2.5'
+end

@@ -30,6 +30,16 @@
 //        make.height.greaterThanOrEqualTo(@100);
     }];
     
+    UIView *showXV = [UIView new];
+    [self.view addSubview:showXV];
+    showXV.backgroundColor = H_UI_RandomColor;
+    [showXV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(pic.mas_bottom).offset(10);
+        make.width.and.centerX.equalTo(pic);
+        make.height.greaterThanOrEqualTo(@60);
+    }];
+    
+    
     
     
     

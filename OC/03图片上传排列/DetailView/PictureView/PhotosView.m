@@ -122,7 +122,7 @@
     
     CGRect frameRect = self.frame;
     CGFloat lastBtnMaxX = 0 ;
-
+    UIButton *lastBtn;
     //复制多一个临时的数组主要为了添加/删除按钮
     NSMutableArray *tmpArr = [self.picArr mutableCopy];
     [tmpArr addObject:_addBtn];
@@ -136,22 +136,21 @@
 
     CGFloat magin = (CGRectGetWidth(self.frame)-maxColumns*btnW)/(maxColumns+1);
 
-#if 0
+#if 1
+    //方法一: 使用layout 布局
     for (int i = 0; i<count; i++) {
         NSInteger row = i / maxColumns;
         NSInteger column = i %maxColumns;
         NSLog(@"打印的行%d和列%d,还有总数%d",row,column,count);
-        UIButton *btn = self.picArr[i];
+        UIButton *btn = tmpArr[i];
         CGFloat btnX = magin + (magin+btnW)*column;
         CGFloat btnY = magin + (magin+btnW)*row;
-        
-
         if (i == count-1) {
             [btn mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self).offset(btnY);
                 make.left.equalTo(self).offset(btnX);
                 make.width.and.height.mas_equalTo(btnW);
-                make.bottom.equalTo(self).offset(magin);
+                make.bottom.equalTo(self).offset(-magin);
             }];
             return;
         }
@@ -161,34 +160,21 @@
             make.width.and.height.mas_equalTo(btnW);
         }];
         lastBtn = btn;
-        /*
-         CGFloat btnX = magin + (magin+btnW)*column;
-         CGFloat btnY = magin + (magin+btnW)*row;
-         btn.frame = CGRectMake(btnX, btnY, btnW, btnH);
-         if (i==count-1) {
-         lastBtnMaxX = CGRectGetMaxX(btn.frame);
-         }
-         */
+
     }
 #else
     
-    
+    //方法二: 使用frame 布局,坏处就是外部不能使用layout布局
     for (int i = 0; i<count; i++) {
         NSInteger row = i / maxColumns;
         NSInteger column = i %maxColumns;
-        NSLog(@"打印的行%d和列%d,还有总数%d",row,column,count);
         UIButton *btn = tmpArr[i];
         CGFloat btnX = magin + (magin+btnW)*column;
         CGFloat btnY = magin + (magin+btnW)*row;
         btn.frame = (CGRect){btnX,btnY,PHOTOWH,PHOTOWH};
         lastBtnMaxX = CGRectGetMaxX(btn.frame);
     }
-//    //放置添加按钮
-//    _addBtn.frame = (CGRect){lastBtnMaxX+PHOTOMARGIN,PHOTOMARGIN,PHOTOWH,PHOTOWH};
-//    //放置减少按钮
-//    _cancelBtn.frame = (CGRect){lastBtnMaxX+PHOTOWH+PHOTOMARGIN*2,PHOTOMARGIN,PHOTOWH,PHOTOWH};
-    //这里编辑添加后的的尺寸
-//    self.contentSize= (CGSize){CGRectGetMaxX( _cancelBtn.frame)+magin,self.frame.size.height};
+
     frameRect.size.height = CGRectGetMaxY(_cancelBtn.frame)+magin;
     self.frame = frameRect;
 #endif
